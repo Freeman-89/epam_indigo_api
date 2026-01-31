@@ -1,0 +1,92 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Chemical Renderer API",
+    "version": "1.0.0",
+    "description": "API for rendering chemical structures from SMILES or MOL files."
+  },
+  "servers": [
+    { "url": "http://localhost:8000" }
+  ],
+  "paths": {
+    "/api/render": {
+      "get": {
+        "summary": "Render molecule from SMILES",
+        "parameters": [
+          { "name": "smiles", "in": "query", "required": true, "schema": { "type": "string" }, "example": "CCO" },
+          { "name": "width", "in": "query", "schema": { "type": "integer", "default": 400 } },
+          { "name": "height", "in": "query", "schema": { "type": "integer", "default": 400 } },
+          { "name": "format", "in": "query", "schema": { "type": "string", "default": "svg" } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns URL to the rendered molecule image",
+            "content": {
+              "application/json": {
+                "example": { "url": "http://localhost:8000/static/tmp/1769840821.svg" },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": { "type": "string", "format": "uri" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing SMILES parameter",
+            "content": {
+              "application/json": {
+                "example": { "error": "SMILES parameter is required" }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Render molecule from SMILES or MOL file",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "smiles": { "type": "string", "example": "CCO" },
+                  "mol": { "type": "string", "format": "binary" },
+                  "width": { "type": "integer", "default": 400 },
+                  "height": { "type": "integer", "default": 400 },
+                  "format": { "type": "string", "default": "svg" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns URL to the rendered molecule image",
+            "content": {
+              "application/json": {
+                "example": { "url": "http://localhost:8000/static/tmp/1769840821.svg" },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "url": { "type": "string", "format": "uri" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing SMILES or MOL file",
+            "content": {
+              "application/json": {
+                "example": { "error": "Either SMILES or MOL file is required" }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
