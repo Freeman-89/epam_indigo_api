@@ -18,5 +18,5 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 COPY --from=builder /install /usr/local
 COPY --from=builder /app /app
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "main:app", "--workers", "2", "--threads", "2"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "main:app", "--workers", "1", "--threads", "2"]
 

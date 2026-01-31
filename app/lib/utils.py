@@ -20,6 +20,6 @@ class FileHendler:
                 ts = int(file.stem)
                 if now - ts > max_age_sec:
                     file.unlink()
-            except ValueError:
-                pass
+            except Exception as e:
+                print(f"Cannot delete {file}: {e}")
  
