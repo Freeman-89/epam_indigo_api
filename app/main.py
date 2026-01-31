@@ -9,7 +9,7 @@ app = Flask(__name__, static_url_path='/static', static_folder='static')
 app.register_blueprint(swagger_ui_blueprint, url_prefix='/api/swagger')
 app.register_blueprint(api, url_prefix="/api")
 CORS(app)
-file_hendler = FileHendler(dir='static/tmp')
+file_hendler = FileHendler(dir='./static/tmp')
 
 def cleanup_loop():
     while True:
